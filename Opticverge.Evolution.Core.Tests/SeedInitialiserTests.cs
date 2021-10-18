@@ -42,14 +42,14 @@ namespace Opticverge.Evolution.Core.Tests
         [InlineData(1000000)]
         [InlineData(10000000)]
         public async Task SeedInitialiser_Should_BeThreadSafe(
-            int quantity
+            ulong quantity
         )
         {
             // arrange
-            var currentSeed = SeedInitialiser.Seed;
+            var initialSeed = SeedInitialiser.GetSeed();
 
-            var actionBlock = new ActionBlock<int>(
-                i => SeedInitialiser.GetSeed(),
+            var actionBlock = new ActionBlock<ulong>(
+                _ => SeedInitialiser.GetSeed(),
                 new ExecutionDataflowBlockOptions
                 {
                     MaxDegreeOfParallelism = Environment.ProcessorCount * 2
@@ -58,7 +58,7 @@ namespace Opticverge.Evolution.Core.Tests
 
             // act
 
-            for (int i = 0; i < quantity; i++)
+            for (ulong i = 0; i < quantity; i++)
             {
                 actionBlock.Post(i);
             }
@@ -68,7 +68,7 @@ namespace Opticverge.Evolution.Core.Tests
             await actionBlock.Completion;
 
             // assert
-            Assert.Equal(currentSeed + (ulong)quantity, SeedInitialiser.Seed);
+            Assert.Equal(initialSeed + quantity, SeedInitialiser.Seed);
         }
     }
 }
