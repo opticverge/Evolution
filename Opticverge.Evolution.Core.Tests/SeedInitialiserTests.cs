@@ -33,16 +33,19 @@ namespace Opticverge.Evolution.Core.Tests
         }
 
         [Theory]
-        [InlineData(1)]
-        [InlineData(10)]
-        [InlineData(100)]
-        [InlineData(1000)]
-        [InlineData(10000)]
-        [InlineData(100000)]
-        [InlineData(1000000)]
-        [InlineData(10000000)]
+        // [InlineData(1)]
+        // [InlineData(10)]
+        // [InlineData(100)]
+        [InlineData(1000, 1)]
+        [InlineData(1000, 2)]
+        [InlineData(1000, 4)]
+        // [InlineData(10000)]
+        // [InlineData(100000)]
+        // [InlineData(1000000)]
+        // [InlineData(10000000)]
         public async Task SeedInitialiser_Should_BeThreadSafe(
-            ulong quantity
+            ulong quantity,
+            int maxDegreeOfParallelism
         )
         {
             // arrange
@@ -52,7 +55,7 @@ namespace Opticverge.Evolution.Core.Tests
                 _ => SeedInitialiser.GetSeed(),
                 new ExecutionDataflowBlockOptions
                 {
-                    MaxDegreeOfParallelism = Environment.ProcessorCount * 2
+                    MaxDegreeOfParallelism = maxDegreeOfParallelism
                 }
             );
 
