@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Opticverge.Evolution.Core.Generators;
@@ -9,7 +11,7 @@ namespace Opticverge.Evolution.Core.Tests
     public class SeedInitialiserTests
     {
         [Fact]
-        public void Seed_Should_Not_Return_Zero()
+        public void Seed_Should_NotReturnZero()
         {
             // arrange
             // act
@@ -36,9 +38,9 @@ namespace Opticverge.Evolution.Core.Tests
         // [InlineData(1)]
         // [InlineData(10)]
         // [InlineData(100)]
-        [InlineData(1000, 1)]
+        // [InlineData(1000, 1)]
         [InlineData(1000, 2)]
-        [InlineData(1000, 4)]
+        // [InlineData(1000, 4)]
         // [InlineData(10000)]
         // [InlineData(100000)]
         // [InlineData(1000000)]
@@ -49,10 +51,10 @@ namespace Opticverge.Evolution.Core.Tests
         )
         {
             // arrange
-            var initialSeed = SeedInitialiser.GetSeed();
+            var bag = new ConcurrentBag<ulong>();
 
             var actionBlock = new ActionBlock<ulong>(
-                _ => SeedInitialiser.GetSeed(),
+                _ => bag.Add(SeedInitialiser.GetSeed()),
                 new ExecutionDataflowBlockOptions
                 {
                     MaxDegreeOfParallelism = maxDegreeOfParallelism
@@ -60,10 +62,9 @@ namespace Opticverge.Evolution.Core.Tests
             );
 
             // act
-
             for (ulong i = 0; i < quantity; i++)
             {
-                actionBlock.Post(i);
+                await actionBlock.SendAsync(i);
             }
 
             actionBlock.Complete();
@@ -71,7 +72,7 @@ namespace Opticverge.Evolution.Core.Tests
             await actionBlock.Completion;
 
             // assert
-            Assert.Equal(initialSeed + quantity, SeedInitialiser.Seed);
+            Assert.Equal(quantity, (ulong)bag.Distinct().Count());
         }
     }
 }
