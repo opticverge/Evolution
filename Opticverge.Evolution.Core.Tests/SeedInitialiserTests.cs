@@ -35,16 +35,21 @@ namespace Opticverge.Evolution.Core.Tests
         }
 
         [Theory]
-        // [InlineData(1)]
-        // [InlineData(10)]
-        // [InlineData(100)]
-        // [InlineData(1000, 1)]
+        [InlineData(100, 1)]
+        [InlineData(1000, 1)]
+        [InlineData(10000, 1)]
+        [InlineData(100000, 1)]
+        [InlineData(1000000, 1)]
+        [InlineData(100, 2)]
         [InlineData(1000, 2)]
-        // [InlineData(1000, 4)]
-        // [InlineData(10000)]
-        // [InlineData(100000)]
-        // [InlineData(1000000)]
-        // [InlineData(10000000)]
+        [InlineData(10000, 2)]
+        [InlineData(100000, 2)]
+        [InlineData(1000000, 2)]
+        [InlineData(100, 4)]
+        [InlineData(1000, 4)]
+        [InlineData(10000, 4)]
+        [InlineData(100000, 4)]
+        [InlineData(1000000, 4)]
         public async Task SeedInitialiser_Should_BeThreadSafe(
             ulong quantity,
             int maxDegreeOfParallelism
