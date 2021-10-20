@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,7 +5,7 @@ using System.Threading.Tasks.Dataflow;
 using Opticverge.Evolution.Core.Generators;
 using Xunit;
 
-namespace Opticverge.Evolution.Core.Tests
+namespace Opticverge.Evolution.Core.Tests.Generators
 {
     public class SeedInitialiserTests
     {

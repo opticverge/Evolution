@@ -2,7 +2,7 @@ using System.Linq;
 using Opticverge.Evolution.Core.Generators;
 using Xunit;
 
-namespace Opticverge.Evolution.Core.Tests
+namespace Opticverge.Evolution.Core.Tests.Generators
 {
     public class XorShiftPlusGeneratorTests
     {
@@ -133,6 +133,47 @@ namespace Opticverge.Evolution.Core.Tests
 
             // assert
             Assert.InRange(actual, min, max);
+        }
+
+        [Fact]
+        public void NextBool_Should_FollowProcess()
+        {
+            // arrange
+            var target = new XorShiftPlusGenerator();
+
+            // act
+            var actual = target.NextBool();
+
+            // assert
+            Assert.IsType<bool>(actual);
+        }
+
+        [Theory]
+        [InlineData(100)]
+        [InlineData(1000)]
+        [InlineData(100000)]
+        public void NextBool_Should_FollowProcess_When_CalledManyTimes(
+            int quantity
+        )
+        {
+            // arrange
+            var target = new XorShiftPlusGenerator();
+
+            // act
+            var generated = new bool[quantity];
+
+            for (int i = 0; i < quantity; i++)
+            {
+                generated[i] = target.NextBool();
+            }
+
+            // act
+            var actualTrue = generated.Count(v => v is true);
+            var actualFalse = generated.Count(v => v is false);
+
+            // assert
+            Assert.True(actualTrue > 0);
+            Assert.True(actualFalse > 0);
         }
     }
 }

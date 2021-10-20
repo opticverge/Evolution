@@ -2,6 +2,9 @@ using System;
 
 namespace Opticverge.Evolution.Core.Generators
 {
+    /// <summary>
+    /// A pseudo random number generator
+    /// </summary>
     public class XorShiftPlusGenerator : Random
     {
         public ulong Seed { get; }
@@ -10,6 +13,9 @@ namespace Opticverge.Evolution.Core.Generators
 
         private ulong _x;
         private ulong _y;
+
+        private ulong _buffer;
+        private ulong _bufferMask;
 
         public XorShiftPlusGenerator()
         {
@@ -45,6 +51,27 @@ namespace Opticverge.Evolution.Core.Generators
         public double NextDouble(double min, double max)
         {
             return (NextDouble() * (max - min)) + min;
+        }
+
+        public bool NextBool()
+        {
+            if (_bufferMask > 0)
+            {
+                var next = (_buffer & _bufferMask) == 0;
+                _bufferMask >>= 1;
+                return next;
+            }
+
+            var tempX = _y;
+            _x ^= _x << 23;
+            var tempY = _x ^ _y ^ (_x >> 17) ^ (_y >> 26);
+
+            _buffer = tempY + _y;
+            _x = tempX;
+            _y = tempY;
+
+            _bufferMask = 0x8000000000000000;
+            return (_buffer & 0xF000000000000000) == 0;
         }
     }
 }
