@@ -53,6 +53,9 @@ namespace Opticverge.Evolution.Core.Generators
             return (NextDouble() * (max - min)) + min;
         }
 
+        /// <summary>
+        /// Returns a random boolean
+        /// </summary>
         public bool NextBool()
         {
             if (_bufferMask > 0)
@@ -72,6 +75,17 @@ namespace Opticverge.Evolution.Core.Generators
 
             _bufferMask = 0x8000000000000000;
             return (_buffer & 0xF000000000000000) == 0;
+        }
+
+        /// <summary>
+        /// Returns a random boolean using <see cref="NextDouble()"/> and a bias
+        /// </summary>
+        /// <param name="bias">Should be within the range 0.0 and 1.0</param>
+        /// <remarks>When the bias is set to 0.0 the output will always be false.
+        /// When set to 1.0 the output will always be true.</remarks>
+        public bool NextBool(double bias)
+        {
+            return NextDouble() < bias;
         }
     }
 }

@@ -175,5 +175,23 @@ namespace Opticverge.Evolution.Core.Tests.Generators
             Assert.True(actualTrue > 0);
             Assert.True(actualFalse > 0);
         }
+
+        [Theory]
+        [InlineData(0.0, false)]
+        [InlineData(1.0, true)]
+        public void NextBool_WithBias_Should_FollowProcess(
+            double bias,
+            bool expected
+        )
+        {
+            // arrange
+            var target = new XorShiftPlusGenerator();
+
+            // act
+            var actual = target.NextBool(bias);
+
+            // assert
+            Assert.Equal(expected, actual);
+        }
     }
 }
