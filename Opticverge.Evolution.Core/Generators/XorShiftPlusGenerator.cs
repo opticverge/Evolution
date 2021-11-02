@@ -7,7 +7,7 @@ namespace Opticverge.Evolution.Core.Generators
     /// </summary>
     public class XorShiftPlusGenerator : Random
     {
-        public ulong Seed { get; }
+        public ulong Seed { get; protected set; }
 
         private const double DoubleUnit = 1.0 / (int.MaxValue + 1.0);
 
@@ -24,9 +24,16 @@ namespace Opticverge.Evolution.Core.Generators
             _y = Seed >> 3;
         }
 
-        public XorShiftPlusGenerator(ulong seed)
+        public XorShiftPlusGenerator(ulong? seed)
         {
-            Seed = seed == 0 ? SeedInitialiser.GetSeed() : seed;
+            Seed = (ulong)(seed is null or 0 ? SeedInitialiser.GetSeed() : seed);
+            _x = Seed << 3;
+            _y = Seed >> 3;
+        }
+
+        public void Reset()
+        {
+            ++Seed;
             _x = Seed << 3;
             _y = Seed >> 3;
         }
