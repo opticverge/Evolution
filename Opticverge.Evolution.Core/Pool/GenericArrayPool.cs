@@ -2,6 +2,10 @@ using System.Buffers;
 
 namespace Opticverge.Evolution.Core.Pool
 {
+    /// <summary>
+    /// Generates a singleton per type that provides a reusable pool of arrays for that type
+    /// </summary>
+    /// <typeparam name="T">The type stored in the array</typeparam>
     public class GenericArrayPool<T>
     {
         private readonly ArrayPool<T> _pool;

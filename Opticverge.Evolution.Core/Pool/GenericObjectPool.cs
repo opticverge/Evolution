@@ -2,6 +2,10 @@ using Microsoft.Extensions.ObjectPool;
 
 namespace Opticverge.Evolution.Core.Pool
 {
+    /// <summary>
+    /// Generates a singleton per type that provides a reusable pool of objects for that type
+    /// </summary>
+    /// <typeparam name="T">The type stored in the pool</typeparam>
     public class GenericObjectPool<T> where T : class, new()
     {
         private readonly ObjectPool<T> _pool;

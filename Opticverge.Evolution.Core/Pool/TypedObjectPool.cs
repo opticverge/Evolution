@@ -2,6 +2,11 @@ using Microsoft.Extensions.ObjectPool;
 
 namespace Opticverge.Evolution.Core.Pool
 {
+    /// <summary>
+    /// Provides a way to inherit and customise a typed object pool
+    /// </summary>
+    /// <typeparam name="T">The inherting class</typeparam>
+    /// <typeparam name="V">The type to be stored in the pool</typeparam>
     public abstract class TypedObjectPool<T, V> where V : class, new() where T : class, new()
     {
         private readonly ObjectPool<V> _pool;
