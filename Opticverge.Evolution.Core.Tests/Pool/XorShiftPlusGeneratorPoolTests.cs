@@ -68,6 +68,7 @@ namespace Opticverge.Evolution.Core.Tests.Pool
 
             // assert
             Assert.Equal(expected, actual);
+            Assert.Equal(expected.Seed, actual.Seed);
         }
 
         [Fact]
@@ -83,6 +84,39 @@ namespace Opticverge.Evolution.Core.Tests.Pool
 
             // assert
             Assert.Equal(expected, actual);
+            Assert.Equal(expected.Seed, actual.Seed);
+        }
+
+        [Fact]
+        public void Return_Should_FollowProcess_When_ResetIsTrue()
+        {
+            // arrange
+            var target = XorShiftPlusGeneratorPool.Instance;
+            var expected = target.Get();
+            target.Return(expected, true);
+
+            // act
+            var actual = target.Get();
+
+            // assert
+            Assert.Equal(expected, actual);
+            Assert.Equal(expected.Seed, actual.Seed);
+        }
+
+        [Fact]
+        public void Return_Should_FollowProcess_When_ResetIsFalse()
+        {
+            // arrange
+            var target = XorShiftPlusGeneratorPool.Instance;
+            var expected = target.Get();
+            target.Return(expected, false);
+
+            // act
+            var actual = target.Get();
+
+            // assert
+            Assert.Equal(expected, actual);
+            Assert.Equal(expected.Seed, actual.Seed);
         }
     }
 }
