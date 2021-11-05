@@ -6,7 +6,9 @@ namespace Opticverge.Evolution.Core.Pool
     {
         public XorShiftPlusGenerator Get(ulong? seed)
         {
-            return new XorShiftPlusGenerator(seed);
+            var generator = Get();
+            generator.Reset(seed);
+            return generator;
         }
     }
 }

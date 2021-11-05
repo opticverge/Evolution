@@ -38,6 +38,13 @@ namespace Opticverge.Evolution.Core.Generators
             _y = Seed >> 3;
         }
 
+        public void Reset(ulong? seed)
+        {
+            Seed = (ulong)(seed is null or 0 ? SeedInitialiser.GetSeed() : seed);
+            _x = Seed << 3;
+            _y = Seed >> 3;
+        }
+
         /// <inheritdoc />
         public override double NextDouble()
         {
