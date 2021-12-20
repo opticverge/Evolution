@@ -208,5 +208,19 @@ namespace Opticverge.Evolution.Core.Tests.Generators
             // assert
             Assert.NotEqual(expected, target.Seed);
         }
+
+        [Fact]
+        public void Reset_Should_FollowProcess_WhenSeedProvided()
+        {
+            // arrange
+            var previousSeed = 1UL;
+            var target = new XorShiftPlusGenerator(previousSeed);
+
+            // act
+            target.Reset(2UL);
+
+            // assert
+            Assert.NotEqual(previousSeed, target.Seed);
+        }
     }
 }
