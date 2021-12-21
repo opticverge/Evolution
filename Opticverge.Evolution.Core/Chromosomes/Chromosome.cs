@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using K4os.Hash.xxHash;
 using OneOf;
 using Opticverge.Evolution.Core.Generators;
 using Opticverge.Evolution.Core.LifeCycle;
@@ -16,6 +17,8 @@ namespace Opticverge.Evolution.Core.Chromosomes
     /// <typeparam name="T"></typeparam>
     public class Chromosome<T> : IChromosome, ILifeCycle
     {
+        private ulong? _hash;
+
         public ulong? Seed { get; protected set; }
 
         public XorShiftPlusGenerator Generator { get; protected set; }
@@ -24,12 +27,26 @@ namespace Opticverge.Evolution.Core.Chromosomes
 
         public StringBuilder IdBuilder { get; protected set; }
 
+        public virtual string Id
+        {
+            get => throw new NotImplementedException();
+        }
+
+        public ulong Hash
+        {
+            get
+            {
+                if (_hash != null) return _hash.Value;
+                _hash = XXH64.DigestOf(Encoding.UTF8.GetBytes(Id));
+                return _hash.Value;
+            }
+        }
+
         public Chromosome(ulong? seed = null)
         {
             Seed = seed;
             Setup();
         }
-
 
         public TValue Generate<TValue>(
             OneOf<TValue, Chromosome<TValue>>? dna,
@@ -77,7 +94,7 @@ namespace Opticverge.Evolution.Core.Chromosomes
             IdBuilder?.Clear();
             IdBuilder ??= GenericObjectPool<StringBuilder>.Instance.Get();
 
-            Phenotype = default(T);
+            _hash = null;
         }
 
         public virtual void Teardown()

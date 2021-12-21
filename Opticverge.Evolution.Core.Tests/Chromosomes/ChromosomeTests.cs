@@ -172,5 +172,27 @@ namespace Opticverge.Evolution.Core.Tests.Chromosomes
             // assert
             Assert.Throws<NotImplementedException>(() => target.Mutate(chromosome, 1.0));
         }
+
+        [Fact]
+        public void Id_Should_FollowProcess()
+        {
+            // arrange
+            var target = new Chromosome<double>();
+
+            // act
+            // assert
+            Assert.Throws<NotImplementedException>(() => target.Id);
+        }
+
+        [Fact]
+        public void Hash_Should_FollowProcess()
+        {
+            // arrange
+            var target = new Chromosome<double>();
+
+            // act
+            // assert
+            Assert.Throws<NotImplementedException>(() => target.Hash);
+        }
     }
 }
