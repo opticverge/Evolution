@@ -3,7 +3,6 @@ using System.Text;
 using K4os.Hash.xxHash;
 using OneOf;
 using Opticverge.Evolution.Core.Generators;
-using Opticverge.Evolution.Core.LifeCycle;
 using Opticverge.Evolution.Core.Pool;
 
 namespace Opticverge.Evolution.Core.Chromosomes
@@ -15,7 +14,7 @@ namespace Opticverge.Evolution.Core.Chromosomes
     /// The chromosome comes with a fast pseudo random number generator.
     /// </remarks>
     /// <typeparam name="T"></typeparam>
-    public class Chromosome<T> : IChromosome, ILifeCycle
+    public class Chromosome<T> : IChromosome
     {
         private ulong? _hash;
 
