@@ -14,7 +14,7 @@ namespace Opticverge.Evolution.Core.Problems
         public IChromosome[] Population { get; protected set; }
         public int PopulationSize { get; protected set; }
         public int Concurrency { get; }
-        public ConcurrentHashSet<ulong> Generated { get; protected set; }
+        public ConcurrentHashSet<ulong> Generated { get; }
         public LifeTime LifeTime { get; }
         public Objective Objective { get; }
 
@@ -43,7 +43,8 @@ namespace Opticverge.Evolution.Core.Problems
             Concurrency = Math.Max(1, concurrency);
             PopulationSize = populationSize > 0
                 ? populationSize
-                : throw new ArgumentOutOfRangeException(nameof(populationSize));
+                : throw new ArgumentOutOfRangeException(nameof(populationSize),
+                    $"{nameof(populationSize)} must be greater than 0");
             Population = new IChromosome[PopulationSize];
         }
 
