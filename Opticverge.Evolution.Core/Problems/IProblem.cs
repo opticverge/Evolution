@@ -57,5 +57,25 @@ namespace Opticverge.Evolution.Core.Problems
         /// Increments the current generation to the next
         /// </summary>
         public void NextGeneration();
+
+        /// <summary>
+        /// A hook provided for when the evolutionary process starts
+        /// </summary>
+        void Start();
+
+        /// <summary>
+        /// Evaluates the population
+        /// </summary>
+        void Evaluate();
+
+        /// <summary>
+        /// A hook provided for when the evolutionary process ends
+        /// </summary>
+        void End();
+
+        /// <summary>
+        /// Sorts the population
+        /// </summary>
+        void Sort();
     }
 }

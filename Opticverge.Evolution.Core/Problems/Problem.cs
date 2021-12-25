@@ -85,5 +85,25 @@ namespace Opticverge.Evolution.Core.Problems
                 TokenSource.Cancel();
             }
         }
+
+        public void Start()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void End()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Evaluate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Sort()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
