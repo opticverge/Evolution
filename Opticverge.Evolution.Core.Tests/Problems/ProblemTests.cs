@@ -119,11 +119,11 @@ namespace Opticverge.Evolution.Core.Tests.Problems
         public async Task LifeTime_Should_CancelToken_When_DateTimeSet(int delay)
         {
             // arrange
-            var dateTime = DateTime.UtcNow.AddMilliseconds(1);
-            var target = new Problem(Objective.Maximisation, lifeTime: new LifeTime(dateTime));
+            var target = new Problem(Objective.Maximisation,
+                lifeTime: new LifeTime(DateTime.UtcNow.AddMilliseconds(delay)));
 
             // act
-            await Task.Delay(TimeSpan.FromMilliseconds(delay));
+            await Task.Delay(TimeSpan.FromMilliseconds(delay + 10));
 
             // assert
             Assert.NotNull(target.LifeTime);
