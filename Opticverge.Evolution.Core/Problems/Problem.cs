@@ -9,15 +9,17 @@ namespace Opticverge.Evolution.Core.Problems
     {
         private Func<IProblem, bool> _terminatingCondition;
         public CancellationTokenSource TokenSource { get; }
-        public ulong Generation { get; protected set; }
+        public ulong Generation { get; private set; }
         public ulong Epochs { get; protected set; }
         public IChromosome[] Population { get; protected set; }
         public int PopulationSize { get; protected set; }
         public int Concurrency { get; }
         public ConcurrentHashSet<ulong> Generated { get; protected set; }
         public LifeTime LifeTime { get; }
+        public Objective Objective { get; }
 
         public Problem(
+            Objective objective,
             LifeTime lifeTime = null,
             int populationSize = 100,
             int concurrency = 1,
@@ -26,7 +28,10 @@ namespace Opticverge.Evolution.Core.Problems
         {
             TokenSource = tokenSource ?? new CancellationTokenSource();
 
+            Objective = objective;
+
             LifeTime = lifeTime;
+
             LifeTime?.Switch(
                 epochs => Epochs = epochs,
                 timeSpan => TokenSource.CancelAfter(timeSpan),
@@ -63,6 +68,21 @@ namespace Opticverge.Evolution.Core.Problems
         public virtual IChromosome Generate()
         {
             throw new NotImplementedException();
+        }
+
+        public void NextGeneration()
+        {
+            Generation++;
+
+            if (Epochs != 0UL && Generation >= Epochs)
+            {
+                TokenSource.Cancel();
+            }
+
+            if (_terminatingCondition?.Invoke(this) == true)
+            {
+                TokenSource.Cancel();
+            }
         }
     }
 }

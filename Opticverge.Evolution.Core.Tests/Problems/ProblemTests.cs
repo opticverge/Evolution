@@ -13,9 +13,10 @@ namespace Opticverge.Evolution.Core.Tests.Problems
         {
             // arrange
             // act
-            var target = new Problem();
+            var target = new Problem(Objective.Maximisation);
 
             // assert
+            Assert.Equal(Objective.Maximisation, target.Objective);
             Assert.NotNull(target.TokenSource);
             Assert.False(target.TokenSource.IsCancellationRequested);
             Assert.True(target.Concurrency > 0);
@@ -40,12 +41,14 @@ namespace Opticverge.Evolution.Core.Tests.Problems
 
             // act
             var target = new Problem(
+                Objective.Maximisation,
                 concurrency: concurrency,
                 populationSize: populationSize,
                 tokenSource: tokenSource
             );
 
             // assert
+            Assert.Equal(Objective.Maximisation, target.Objective);
             Assert.NotNull(target.TokenSource);
             Assert.False(target.TokenSource.IsCancellationRequested);
             Assert.Same(tokenSource, target.TokenSource);
@@ -64,14 +67,14 @@ namespace Opticverge.Evolution.Core.Tests.Problems
             // arrange
             // act
             // assert
-            Assert.Throws<ArgumentOutOfRangeException>(() => new Problem(populationSize: 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new Problem(Objective.Maximisation, populationSize: 0));
         }
 
         [Fact]
         public void Concurrency_Should_BeAMinimumOfOne()
         {
             // arrange
-            var target = new Problem(concurrency: 0);
+            var target = new Problem(Objective.Maximisation, concurrency: 0);
 
             // act
             // assert
@@ -82,7 +85,7 @@ namespace Opticverge.Evolution.Core.Tests.Problems
         public void LifeTime_Should_SetEpochs_When_ULongSet()
         {
             // arrange
-            var target = new Problem(lifeTime: new LifeTime(100UL));
+            var target = new Problem(Objective.Maximisation, lifeTime: new LifeTime(100UL));
 
             // act
             // assert
@@ -99,10 +102,10 @@ namespace Opticverge.Evolution.Core.Tests.Problems
         )
         {
             // arrange
-            var target = new Problem(lifeTime: new LifeTime(TimeSpan.FromMilliseconds(delay)));
+            var target = new Problem(Objective.Maximisation, lifeTime: new LifeTime(TimeSpan.FromMilliseconds(delay)));
 
             // act
-            await Task.Delay(TimeSpan.FromMilliseconds(delay));
+            await Task.Delay(TimeSpan.FromMilliseconds(delay + 10));
 
             // assert
             Assert.NotNull(target.LifeTime);
@@ -117,7 +120,7 @@ namespace Opticverge.Evolution.Core.Tests.Problems
         {
             // arrange
             var dateTime = DateTime.UtcNow.AddMilliseconds(1);
-            var target = new Problem(lifeTime: new LifeTime(dateTime));
+            var target = new Problem(Objective.Maximisation, lifeTime: new LifeTime(dateTime));
 
             // act
             await Task.Delay(TimeSpan.FromMilliseconds(delay));
@@ -131,25 +134,39 @@ namespace Opticverge.Evolution.Core.Tests.Problems
         public void LifeTime_Should_CancelToken_When_TerminatingConditionProvided()
         {
             // arrange
-            Func<IProblem, bool> terminatingCondition = problem =>
-            {
-                problem.TokenSource.Cancel();
-                return true;
-            };
+            Func<IProblem, bool> terminatingCondition = problem => true;
 
-            var target = new Problem(lifeTime: new LifeTime(terminatingCondition));
+            var target = new Problem(Objective.Maximisation, lifeTime: new LifeTime(terminatingCondition));
 
             // act
+            target.NextGeneration();
+
             // assert
             Assert.NotNull(target.LifeTime);
-            Assert.False(target.TokenSource.IsCancellationRequested);
+            Assert.True(target.TokenSource.IsCancellationRequested);
+            Assert.True(target.Generation > 0);
+        }
+
+        [Fact]
+        public void Generation_Should_CancelToken_When_GenerationMatchesEpochs()
+        {
+            // arrange
+            var target = new Problem(Objective.Maximisation, lifeTime: new LifeTime(1UL));
+
+            // act
+            target.NextGeneration();
+
+            // assert
+            Assert.NotNull(target.LifeTime);
+            Assert.True(target.TokenSource.IsCancellationRequested);
+            Assert.Equal(target.Generation, target.Epochs);
         }
 
         [Fact]
         public void Initialise_Should_FollowProcess()
         {
             // arrange
-            var target = new Problem();
+            var target = new Problem(Objective.Maximisation);
 
             // act
             // assert
@@ -160,7 +177,7 @@ namespace Opticverge.Evolution.Core.Tests.Problems
         public void Initialise_Should_ThrowOperationCancelledException()
         {
             // arrange
-            var target = new Problem();
+            var target = new Problem(Objective.Maximisation);
 
             // act
             target.TokenSource.Cancel();

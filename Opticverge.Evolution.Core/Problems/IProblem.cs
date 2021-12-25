@@ -46,11 +46,16 @@ namespace Opticverge.Evolution.Core.Problems
         /// Generates a new <see cref="IChromosome"/>
         /// </summary>
         /// <returns></returns>
-        IChromosome Generate();
+        public IChromosome Generate();
 
         /// <summary>
         /// Represents the maximum number of generations a problem will be solved for
         /// </summary>
         public ulong Epochs { get; }
+
+        /// <summary>
+        /// Increments the current generation to the next
+        /// </summary>
+        public void NextGeneration();
     }
 }
