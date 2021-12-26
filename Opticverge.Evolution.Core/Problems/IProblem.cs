@@ -43,10 +43,10 @@ namespace Opticverge.Evolution.Core.Problems
         public void Initialise();
 
         /// <summary>
-        /// Generates a new <see cref="IChromosome"/>
+        /// Creates a new <see cref="IChromosome"/>
         /// </summary>
         /// <returns></returns>
-        public IChromosome Generate();
+        public IChromosome Create();
 
         /// <summary>
         /// Represents the maximum number of generations a problem will be solved for

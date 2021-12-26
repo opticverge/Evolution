@@ -60,13 +60,13 @@ namespace Opticverge.Evolution.Core.Problems
                     continue;
                 }
 
-                Population[i] = Generate();
+                Population[i] = Create();
                 Population[i].Generate();
                 Generated.Add(Population[i].Hash);
             }
         }
 
-        public virtual IChromosome Generate()
+        public virtual IChromosome Create()
         {
             throw new NotImplementedException();
         }
