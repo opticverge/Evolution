@@ -6,5 +6,6 @@ namespace Opticverge.Evolution.Core.Chromosomes
     {
         void Generate();
         void Mutate();
+        public ulong Hash { get; }
     }
 }
