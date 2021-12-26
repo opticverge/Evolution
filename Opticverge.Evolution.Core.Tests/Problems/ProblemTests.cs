@@ -91,6 +91,7 @@ namespace Opticverge.Evolution.Core.Tests.Problems
             // assert
             Assert.NotNull(target.LifeTime);
             Assert.Equal(100UL, target.Epochs);
+            Assert.Equal(0UL, target.Generation);
         }
 
         [Theory]
