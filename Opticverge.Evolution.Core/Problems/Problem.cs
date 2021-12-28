@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using ConcurrentCollections;
 using Opticverge.Evolution.Core.Chromosomes;
+using Opticverge.Evolution.Core.Meta;
 
 namespace Opticverge.Evolution.Core.Problems
 {
@@ -17,6 +18,7 @@ namespace Opticverge.Evolution.Core.Problems
         public ConcurrentHashSet<ulong> Generated { get; }
         public LifeTime LifeTime { get; }
         public Objective Objective { get; }
+        public Summary Summary { get; }
 
         public Problem(
             Objective objective,
@@ -27,9 +29,7 @@ namespace Opticverge.Evolution.Core.Problems
         )
         {
             TokenSource = tokenSource ?? new CancellationTokenSource();
-
             Objective = objective;
-
             LifeTime = lifeTime;
 
             LifeTime?.Switch(
@@ -46,6 +46,7 @@ namespace Opticverge.Evolution.Core.Problems
                 : throw new ArgumentOutOfRangeException(nameof(populationSize),
                     $"{nameof(populationSize)} must be greater than 0");
             Population = new IChromosome[PopulationSize];
+            Summary = new Summary();
         }
 
 
@@ -60,9 +61,10 @@ namespace Opticverge.Evolution.Core.Problems
                     continue;
                 }
 
-                Population[i] = Create();
-                Population[i].Generate();
-                Generated.Add(Population[i].Hash);
+                var chromosome = Create();
+                chromosome.Generate();
+                Population[i] = chromosome;
+                Generated.Add(chromosome.Hash);
             }
         }
 
@@ -88,12 +90,12 @@ namespace Opticverge.Evolution.Core.Problems
 
         public void Start()
         {
-            throw new NotImplementedException();
+            Summary.Start();
         }
 
         public void End()
         {
-            throw new NotImplementedException();
+            Summary.End();
         }
 
         public void Evaluate()

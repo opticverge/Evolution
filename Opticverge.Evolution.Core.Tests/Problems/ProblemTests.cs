@@ -164,6 +164,22 @@ namespace Opticverge.Evolution.Core.Tests.Problems
         }
 
         [Fact]
+        public void NextGeneration_Should_FollowProcess()
+        {
+            // arrange
+            var target = new Problem(Objective.Maximisation);
+
+            // act
+            target.NextGeneration();
+
+            // assert
+            Assert.Null(target.LifeTime);
+            Assert.False(target.TokenSource.IsCancellationRequested);
+            Assert.Equal(1UL, target.Generation);
+            Assert.Equal(0UL, target.Epochs);
+        }
+
+        [Fact]
         public void Initialise_Should_FollowProcess()
         {
             // arrange
@@ -185,6 +201,51 @@ namespace Opticverge.Evolution.Core.Tests.Problems
 
             // assert
             Assert.Throws<OperationCanceledException>(() => target.Initialise());
+        }
+
+        [Fact]
+        public void Create_Should_FollowProcess()
+        {
+            // arrange
+            var target = new Problem(Objective.Maximisation);
+
+            // act
+            // assert
+            Assert.Throws<NotImplementedException>(() => target.Create());
+        }
+
+        [Fact]
+        public async Task Start_Should_FollowProcess()
+        {
+            // arrange
+            var target = new Problem(Objective.Maximisation);
+
+            // act
+            target.Start();
+
+            await Task.Delay(1);
+
+            // assert
+            Assert.NotNull(target.Summary);
+            Assert.Equal(0UL, target.Summary.Generated);
+            Assert.True(target.Summary.Elapsed > 0);
+        }
+
+        [Fact]
+        public async Task End_Should_FollowProcess()
+        {
+            // arrange
+            var target = new Problem(Objective.Maximisation);
+
+            // act
+            target.Start();
+            await Task.Delay(1);
+            target.End();
+
+            // assert
+            Assert.NotNull(target.Summary);
+            Assert.Equal(0UL, target.Summary.Generated);
+            Assert.True(target.Summary.Elapsed > 0);
         }
     }
 }
