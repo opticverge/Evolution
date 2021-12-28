@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using AutoFixture.Xunit2;
 using Moq;
-using Opticverge.Evolution.Core.Algorithm;
+using Opticverge.Evolution.Core.Algorithms;
 using Opticverge.Evolution.Core.Problems;
 using Xunit;
 

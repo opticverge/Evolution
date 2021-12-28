@@ -1,7 +1,7 @@
 using System;
 using Opticverge.Evolution.Core.Problems;
 
-namespace Opticverge.Evolution.Core.Algorithm
+namespace Opticverge.Evolution.Core.Algorithms
 {
     public class EvolutionaryAlgorithm : IEvolutionaryAlgorithm
     {
