@@ -61,6 +61,11 @@ namespace Opticverge.Evolution.Core.Chromosomes
             return dna.Value.AsT1.Phenotype;
         }
 
+        public virtual void Generate()
+        {
+            throw new NotImplementedException();
+        }
+
         public TValue Mutate<TValue>(
             OneOf<TValue, Chromosome<TValue>>? dna,
             TValue value
@@ -73,11 +78,6 @@ namespace Opticverge.Evolution.Core.Chromosomes
             dna.Value.AsT1.Mutate();
 
             return dna.Value.AsT1.Phenotype;
-        }
-
-        public virtual void Generate()
-        {
-            throw new NotImplementedException();
         }
 
         public virtual void Mutate()
