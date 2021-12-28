@@ -14,7 +14,7 @@ In order to optimise throughput, pools are utilised for the creation of objects 
 For example, with the `ArtificialImmuneSystem` the default mutation strategy will create `n * m` clones where `n` is the size of the population and `m` is the number of clones to create per chromosome. At any given time a maximum of `n * m` clones are required throughout the evolutionary lifecycle.  
 
 ## Performance
-Memory management contributes to improvements in performance here with reductions in memory allocations through the reuse of objects and arrays. This approach increases our throughput by approximately 2 orders of magnitude. For example, if it takes 2000ns to create a chromosome the first time, with the use of pools it would only take 25ns to fetch a chromosome from the pool and approximately 10ns to reset the chromosome. This means we average from around 500K chromosomes per second to 28M chromosomes per second with pooling+.    
+Memory management contributes to improvements in performance here with reductions in memory allocations through the reuse of objects and arrays. This approach increases our throughput by approximately 2 orders of magnitude. For example, if it takes 2000ns to create a chromosome the first time, with the use of pools it would only take 25ns to fetch a chromosome from the pool and approximately 10ns to reset the chromosome. This means we average from around 500K chromosomes per second to 28M chromosomes per second with pooling.    
 
 A fast pseudo-random number generator is used which was measured against several other libraries to be the most performant. 
 
