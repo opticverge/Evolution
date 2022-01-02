@@ -29,15 +29,14 @@ namespace Opticverge.Evolution.Core.Problems
         )
         {
             TokenSource = tokenSource ?? new CancellationTokenSource();
-            Objective = objective;
-            LifeTime = lifeTime;
-
-            LifeTime?.Switch(
+            lifeTime?.Switch(
                 epochs => Epochs = epochs,
                 timeSpan => TokenSource.CancelAfter(timeSpan),
                 dateTime => TokenSource.CancelAfter((dateTime.Subtract(DateTime.UtcNow)).Milliseconds),
                 terminatingCondition => _terminatingCondition = terminatingCondition
             );
+            Objective = objective;
+            LifeTime = lifeTime;
 
             Generated = new ConcurrentHashSet<ulong>();
             Concurrency = Math.Max(1, concurrency);

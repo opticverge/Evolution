@@ -106,7 +106,7 @@ namespace Opticverge.Evolution.Core.Tests.Problems
             var target = new Problem(Objective.Maximisation, lifeTime: new LifeTime(TimeSpan.FromMilliseconds(delay)));
 
             // act
-            await Task.Delay(TimeSpan.FromMilliseconds(delay + 100));
+            await Task.Delay(TimeSpan.FromMilliseconds(delay + 200));
 
             // assert
             Assert.NotNull(target.LifeTime);
@@ -124,7 +124,7 @@ namespace Opticverge.Evolution.Core.Tests.Problems
                 lifeTime: new LifeTime(DateTime.UtcNow.AddMilliseconds(delay)));
 
             // act
-            await Task.Delay(TimeSpan.FromMilliseconds(delay + 10));
+            await Task.Delay(TimeSpan.FromMilliseconds(delay + 200));
 
             // assert
             Assert.NotNull(target.LifeTime);
